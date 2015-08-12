@@ -50,7 +50,7 @@ class Hangman
 		else
 			p "Here's a tip: start with guessing letters. WRONG."
 			body_count += 1
-			continue_game
+			dead?
 		end
 	end
 
@@ -83,7 +83,7 @@ class Hangman
 	end
 
 	def continue_game
-		"Hello"
+		#something similar to play that continues asking if the person wants to input a word or letter
 	end
 
 
