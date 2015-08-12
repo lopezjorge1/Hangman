@@ -1,13 +1,11 @@
 class Hangman
 	attr_accessor :secret_word, :guessed_word, :new_word, :body_count 
-
-	@@body_count = 0
 	
 	def initialize(secret_word)
 		@secret_word = secret_word.downcase
 		@guessed_word = secret_word.downcase
 		@new_word = new_word
-		@@body_count = body_count
+		@body_count = 0
 	end
 	
 	def play
