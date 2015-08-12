@@ -1,11 +1,12 @@
 class Hangman
 	attr_accessor :secret_word, :guessed_word, :new_word, :body_count 
 	
+	@@body_count = 0
+	@@new_word = ""
+
 	def initialize(secret_word)
 		@secret_word = secret_word.downcase
 		@guessed_word = secret_word.downcase
-		@new_word = new_word
-		@body_count = 0
 	end
 	
 	def play
@@ -16,7 +17,7 @@ class Hangman
 		
 		case response
 		when "quit"
-			p "I guess you didn't want to play today."
+			p "Game over!"
 		when "word"
 			guess_word
 		when "letter"
@@ -32,7 +33,7 @@ class Hangman
 			when "letter"
 				guess_letter
 			when "quit"
-				p "This game isn't for the weak. Good choice."
+				p "Game over!"
 			else
 				p "Now you're just playing a game that isn't Hangman. BUH-BYE."
 			end
@@ -42,14 +43,15 @@ class Hangman
 	def guess_word
 		p "What do you think the secret word is?"
 		response = gets.chomp.downcase
-		
-		if response == secret_word
-			p "Success! You're a winner!"
-		elsif response == "quit" 
-			p "Already?! I guess you're not built for the game."
+
+		case response
+		when secret_word
+			winner?
+		when "quit"
+			p "Game over!"
 		else
 			p "Here's a tip: start with guessing letters. WRONG."
-			body_count += 1
+			@@body_count += 1
 			dead?
 		end
 	end
@@ -60,52 +62,66 @@ class Hangman
 		
 		case let 
 		when "quit"
-			"Hope you enjoyed losing"
+			"Game over!"
 		end
 
 		if secret_word.count(let) <= 0
 			p "WRONG!"
-			body_count += 1
+			@@body_count += 1
 			dead?
 		else 
 			new_word = guessed_word.split(//).map {|x| x != let ? x = "*" : x = let}.join
-			"Good job! This is what you have thus far, #{new_word}."
-			continue_game
+			p "Good job! This is what you have thus far, #{new_word}."
+			winner?
 		end
 	end
 
 	def dead?
-		if body_count >= 8
+		if @@body_count >= 8
 			p "You just hung me, thanks. Loser!"
 		else
 			continue_game
 		end
 	end
 
-	def continue_game
-		#something similar to play that continues asking if the person wants to input a word or letter
+	def winner?
+		if new_word != secret_word
+			continue_game
+		else
+			p "You have kept me safe. Thank you young squire. WINNER!"
+		end
 	end
 
+	def continue_game
+		p "Would you now like to guess the word now or a letter?"
+		response = gets.chomp.downcase
 
+		case response
+		when "quit"
+			p "Game over!"
+		when "word"
+			guess_word
+		when "letter"
+			guess_letter
+		else
+			p "Would you like to guess the WORD or a LETTER?"
+			p "If at any time you wish to discontinue the game, type quit."
+			response = gets.chomp.downcase
+			
+			case response 
+			when "word"
+				guess_word
+			when "letter"
+				guess_letter
+			when "quit"
+				p "Game over!"
+			else
+				p "Now you're just playing a game that isn't Hangman. BUH-BYE."
+			end
+		end
+	end
 end
 
-#body_count
-#continue_game
 
 game = Hangman.new("hidden")
 game.play
-
-
-
-
-	
-#necessary methods:
-#start game
-#continue game
-#guess word
-#guess letter
-#dead? (draw_body)
-#winner?
-#it should keep iterating to ask for what the person wants to input and then checking if they're correct
-#so when it checks if the game is over, if the game isn't over it should continue with the guesses
-	
