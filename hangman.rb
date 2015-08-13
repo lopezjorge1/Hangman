@@ -1,12 +1,13 @@
 class Hangman
-	attr_accessor :secret_word, :guessed_word, :new_word, :body_count 
+	attr_accessor :secret_word, :guessed_word, :new_word, :body_count, :letters_guessed
 	
 	@@body_count = 0
-	@@new_word = ""
+	@@letters_guessed = []
 
 	def initialize(secret_word)
 		@secret_word = secret_word.downcase
 		@guessed_word = secret_word.downcase
+		@new_word = new_word
 	end
 	
 	def play
@@ -59,6 +60,7 @@ class Hangman
 	def guess_letter
 		p "What do you think the lucky letter is?"
 		let = gets.chomp.downcase
+		@@letters_guessed.push(let)
 		
 		case let 
 		when "quit"
@@ -69,8 +71,8 @@ class Hangman
 			p "WRONG!"
 			@@body_count += 1
 			dead?
-		else 
-			new_word = guessed_word.split(//).map {|x| x != let ? x = "*" : x = let}.join
+		else
+			#new_word = guessed_word.split(//).map {|x| x != let ? x = "*" : x = let}.join
 			p "Good job! This is what you have thus far, #{new_word}."
 			winner?
 		end
@@ -125,3 +127,8 @@ end
 
 game = Hangman.new("hidden")
 game.play
+# one problem for guess_letter could be that once a letter is guessed, for example d
+# then it would become **dd**, but since the method I used transforms anything that
+# isn't the letter guessed, then the d's would become *'s in the next round
+# make a variable that changes within a method then set it to something
+# then make that the default, and keep on do that till the end
