@@ -1,12 +1,13 @@
 class Hangman
-	attr_accessor :secret_word, :guessed_word, :body_count, :letters_guessed
+	attr_accessor :secret_word, :guessed_word, :new_word, :body_count, :letters_guessed
 	
 	@@body_count = 0
 	@@letters_guessed = []
-
+	
 	def initialize(secret_word)
 		@secret_word = secret_word.downcase
-		@guessed_word = secret_word.gsub(/[A-z]/, "*")
+		@guessed_word = guessed_word
+		@new_word = new_word
 	end
 	
 	def play
@@ -18,6 +19,7 @@ class Hangman
 		case response
 		when "quit"
 			p "Game over!"
+			p "The winning word was #{secret_word}."
 		when "word"
 			guess_word
 		when "letter"
@@ -34,6 +36,7 @@ class Hangman
 				guess_letter
 			when "quit"
 				p "Game over!"
+				p "The winning word was #{secret_word}."
 			else
 				p "Now you're just playing a game that isn't Hangman. BUH-BYE."
 			end
@@ -46,9 +49,10 @@ class Hangman
 
 		case response
 		when secret_word
-			winner?
+			p "WINNAH"
 		when "quit"
 			p "Game over!"
+			p "The winning word was #{secret_word}."
 		else
 			p "Here's a tip: start with guessing letters. WRONG."
 			@@body_count += 1
@@ -60,40 +64,35 @@ class Hangman
 		p "What do you think the lucky letter is?"
 		let = gets.chomp.downcase
 		@@letters_guessed.push(let)
-		p @@letters_guessed
 		
 		case let 
 		when "quit"
-			"Game over!"
+			p "Game over!"
+			p "The winning word was #{secret_word}."
 		end
 
 		if secret_word.count(let) <= 0
 			p "WRONG!"
 			@@body_count += 1
 			dead?
-		elsif secret_word.count(let) >= 2
-
 		else
-			guessed_word[secret_word.index(let)] = let
+			guessed_word = secret_word.gsub(/[^#{@@letters_guessed}]/, "*")
 			p "Good job! This is what you have thus far, #{guessed_word}."
-			winner?
+			
+			if guessed_word.downcase == secret_word.downcase
+				p "WINNAH!"	
+			else
+				continue_game
+			end	
 		end
 	end
 
 	def dead?
 		if @@body_count >= 8
 			p "You just hung me, thanks. Loser!"
+			p "The winning word was #{secret_word}."
 		else
 			continue_game
-		end
-	end
-
-	def winner?
-		if guessed_word != secret_word
-			continue_game
-		else
-			p "You have kept me safe. Thank you young squire. WINNER!"
-			p "The word was #{secret_word}!"
 		end
 	end
 
@@ -104,6 +103,7 @@ class Hangman
 		case response
 		when "quit"
 			p "Game over!"
+			p "The winning word was #{secret_word}."
 		when "word"
 			guess_word
 		when "letter"
@@ -120,6 +120,7 @@ class Hangman
 				guess_letter
 			when "quit"
 				p "Game over!"
+				p "The winning word was #{secret_word}."
 			else
 				p "Now you're just playing a game that isn't Hangman. BUH-BYE."
 			end
@@ -128,7 +129,7 @@ class Hangman
 end
 
 
-game = Hangman.new("orange")
+game = Hangman.new("hidden")
 game.play
 # one problem for guess_letter could be that once a letter is guessed, for example d
 # then it would become **dd**, but since the method I used transforms anything that
