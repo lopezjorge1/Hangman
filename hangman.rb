@@ -1,5 +1,5 @@
 class Hangman
-	attr_accessor :secret_word, :guessed_word, :new_word, :body_count, :letters_guessed
+	attr_accessor :secret_word, :guessed_word, :body_count, :letters_guessed, :name
 	
 	@@body_count = 0
 	@@letters_guessed = []
@@ -7,13 +7,13 @@ class Hangman
 	def initialize(secret_word)
 		@secret_word = secret_word.downcase
 		@guessed_word = guessed_word
-		@new_word = new_word
 	end
 	
 	def play
-		p "Welcome to the unoriginal original Hangman!"
-		p "I assume you would like to play!"
-		p "To get you started, would you like to guess the word or just a letter?"
+		p "Welcome to the original Hangman! What's your name?"
+		@@name = gets.chomp.capitalize
+		p "Hi #{@@name}! Your opponent is convinced that you'll kill me, so let's prove them wrong."
+		p "Would you like to guess the secret word, or do you want to guess a letter of the word?"
 		response = gets.chomp.downcase
 		
 		case response
@@ -38,7 +38,7 @@ class Hangman
 				p "Game over!"
 				p "The winning word was #{secret_word}."
 			else
-				p "Now you're just playing a game that isn't Hangman. BUH-BYE."
+				p "Anytime you would like to play, you know where to find me."
 			end
 		end
 	end
@@ -49,12 +49,12 @@ class Hangman
 
 		case response
 		when secret_word
-			p "WINNAH"
+			p "Congratulations #{@@name}! You didn't kill me."
 		when "quit"
 			p "Game over!"
 			p "The winning word was #{secret_word}."
 		else
-			p "Here's a tip: start with guessing letters. WRONG."
+			p "Here's a tip #{@@name}: start with guessing letters. WRONG."
 			@@body_count += 1
 			dead?
 		end
@@ -80,7 +80,7 @@ class Hangman
 			p "Good job! This is what you have thus far, #{guessed_word}."
 			
 			if guessed_word.downcase == secret_word.downcase
-				p "WINNAH!"	
+				p "Congratulations #{@@name}! You didn't kill me."
 			else
 				continue_game
 			end	
@@ -89,7 +89,7 @@ class Hangman
 
 	def dead?
 		if @@body_count >= 8
-			p "You just hung me, thanks. Loser!"
+			p "You proved your opponent right, #{@@name}. LOSER."
 			p "The winning word was #{secret_word}."
 		else
 			continue_game
@@ -97,7 +97,8 @@ class Hangman
 	end
 
 	def continue_game
-		p "Would you now like to guess the word now or a letter?"
+		p "Would you now like to guess the secret word now or a letter?"
+		p "Keep in mind you have #{8 - @@body_count} tries left."
 		response = gets.chomp.downcase
 
 		case response
@@ -122,7 +123,7 @@ class Hangman
 				p "Game over!"
 				p "The winning word was #{secret_word}."
 			else
-				p "Now you're just playing a game that isn't Hangman. BUH-BYE."
+				p "Anytime you would like to play, you know where to find me."
 			end
 		end
 	end
