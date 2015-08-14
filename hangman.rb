@@ -1,13 +1,12 @@
 class Hangman
-	attr_accessor :secret_word, :guessed_word, :new_word, :body_count, :letters_guessed
+	attr_accessor :secret_word, :guessed_word, :body_count, :letters_guessed
 	
 	@@body_count = 0
 	@@letters_guessed = []
 
 	def initialize(secret_word)
 		@secret_word = secret_word.downcase
-		@guessed_word = secret_word.downcase
-		@new_word = new_word
+		@guessed_word = secret_word.gsub(/[A-z]/, "*")
 	end
 	
 	def play
@@ -61,6 +60,7 @@ class Hangman
 		p "What do you think the lucky letter is?"
 		let = gets.chomp.downcase
 		@@letters_guessed.push(let)
+		p @@letters_guessed
 		
 		case let 
 		when "quit"
@@ -71,9 +71,11 @@ class Hangman
 			p "WRONG!"
 			@@body_count += 1
 			dead?
+		elsif secret_word.count(let) >= 2
+
 		else
-			#new_word = guessed_word.split(//).map {|x| x != let ? x = "*" : x = let}.join
-			p "Good job! This is what you have thus far, #{new_word}."
+			guessed_word[secret_word.index(let)] = let
+			p "Good job! This is what you have thus far, #{guessed_word}."
 			winner?
 		end
 	end
@@ -87,10 +89,11 @@ class Hangman
 	end
 
 	def winner?
-		if new_word != secret_word
+		if guessed_word != secret_word
 			continue_game
 		else
 			p "You have kept me safe. Thank you young squire. WINNER!"
+			p "The word was #{secret_word}!"
 		end
 	end
 
@@ -125,10 +128,8 @@ class Hangman
 end
 
 
-game = Hangman.new("hidden")
+game = Hangman.new("orange")
 game.play
 # one problem for guess_letter could be that once a letter is guessed, for example d
 # then it would become **dd**, but since the method I used transforms anything that
 # isn't the letter guessed, then the d's would become *'s in the next round
-# make a variable that changes within a method then set it to something
-# then make that the default, and keep on do that till the end
