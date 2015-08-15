@@ -17,7 +17,7 @@ class Hangman
 		response = gets.chomp.downcase
 		
 		case response
-		when "quit","Q","q"
+		when "quit","q"
 			p "Game over!"
 			p "The secret word was #{secret_word}."
 		when "word","W","w"
@@ -34,7 +34,7 @@ class Hangman
 				guess_word
 			when "letter","L","l"
 				guess_letter
-			when "quit","Q","q"
+			when "quit","q"
 				p "Game over!"
 				p "The secret word was #{secret_word}."
 			else
@@ -50,7 +50,7 @@ class Hangman
 		case response
 		when secret_word
 			p "Congratulations #{@@name}! You didn't kill me."
-		when "quit","Q","q"
+		when "quit","q"
 			p "Game over!"
 			p "The secret word was #{secret_word}."
 		# When the word is guessed incorrectly, then body_count is incremented
@@ -66,6 +66,7 @@ class Hangman
 		p "Keep in mind these are the letter you've guessed thus far: #{@@letters_guessed.map {|x| x.capitalize}.join(" , ")}."
 		let = gets.chomp.downcase
 		@@letters_guessed.push(let)
+
 		#If secret_word doesn't have the letter guessed, then body_count is incremented
 		if secret_word.count(let) <= 0
 			p "Incorrect! Try harder next time."
@@ -100,7 +101,7 @@ class Hangman
 		response = gets.chomp.downcase
 
 		case response
-		when "quit","Q","q"
+		when "quit","q"
 			p "Game over!"
 			p "The secret word was #{secret_word}."
 		when "word","W","w"
@@ -117,7 +118,7 @@ class Hangman
 				guess_word
 			when "letter","L","l"
 				guess_letter
-			when "quit","Q","q"
+			when "quit","q"
 				p "Game over!"
 				p "The secret word was #{secret_word}."
 			else
@@ -128,5 +129,5 @@ class Hangman
 end
 
 
-game = Hangman.new("limerence")
+game = Hangman.new("quit")
 game.play
