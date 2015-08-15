@@ -62,17 +62,12 @@ class Hangman
 
 	def guess_letter
 		p "What do you think the lucky letter is?"
+		p "Keep in mind these are the letter you've guessed thus far: #{@@letters_guessed.map {|x| x.capitalize}.join(" , ")}."
 		let = gets.chomp.downcase
 		@@letters_guessed.push(let)
 		
-		case let 
-		when "quit","Q","q"
-			p "Game over!"
-			p "The secret word was #{secret_word}."
-		end
-
 		if secret_word.count(let) <= 0
-			p "Incorrect, but this is what you have thus far, #{guessed_word}."
+			p "Incorrect! Try harder next time."
 			@@body_count += 1
 			dead?
 		else
@@ -88,7 +83,7 @@ class Hangman
 	end
 #If letter guessed already, it shouldn't count on body_count
 	def dead?
-		if @@body_count >= 8
+		if @@body_count >= 8 
 			p "You proved your opponent right, #{@@name}. LOSER."
 			p "The secret word was #{secret_word}."
 		else
@@ -132,6 +127,3 @@ end
 
 game = Hangman.new("limerence")
 game.play
-# one problem for guess_letter could be that once a letter is guessed, for example d
-# then it would become **dd**, but since the method I used transforms anything that
-# isn't the letter guessed, then the d's would become *'s in the next round
