@@ -1,6 +1,6 @@
 class Hangman
 	attr_accessor :secret_word, :guessed_word, :body_count, :letters_guessed, :name
-	
+	#Class variables made instead of instance variables so that they could modify throughout the class till the game ends
 	@@body_count = 0
 	@@letters_guessed = []
 	
@@ -26,7 +26,7 @@ class Hangman
 			guess_letter
 		else
 			p "Would you like to guess the WORD or a LETTER?"
-			p "If at any time you wish to discontinue the game, type quit."
+			p "If at any time you wish to discontinue the game, type quit (Q)."
 			response = gets.chomp.downcase
 			
 			case response 
@@ -53,23 +53,25 @@ class Hangman
 		when "quit","Q","q"
 			p "Game over!"
 			p "The secret word was #{secret_word}."
+		# When the word is guessed incorrectly, then body_count is incremented
 		else
 			p "Here's a tip #{@@name}: start with guessing letters. WRONG."
 			@@body_count += 1
 			dead?
 		end
 	end
-
+	#I still have to figure out how to quit within guess_letter 
 	def guess_letter
 		p "What do you think the lucky letter is?"
 		p "Keep in mind these are the letter you've guessed thus far: #{@@letters_guessed.map {|x| x.capitalize}.join(" , ")}."
 		let = gets.chomp.downcase
 		@@letters_guessed.push(let)
-		
+		#If secret_word doesn't have the letter guessed, then body_count is incremented
 		if secret_word.count(let) <= 0
 			p "Incorrect! Try harder next time."
 			@@body_count += 1
 			dead?
+		#This puts an asterisk on every letter except the letters that are in the array letters_guessed	
 		else
 			guessed_word = secret_word.gsub(/[^#{@@letters_guessed}]/, "*")
 			p "Good job! This is what you have thus far, #{guessed_word}."
@@ -82,6 +84,7 @@ class Hangman
 		end
 	end
 #If letter guessed already, it shouldn't count on body_count
+#Once body_count reaches a number, then the game is discontinued
 	def dead?
 		if @@body_count >= 8 
 			p "You proved your opponent right, #{@@name}. LOSER."
@@ -106,7 +109,7 @@ class Hangman
 			guess_letter
 		else
 			p "Would you like to guess the WORD or a LETTER?"
-			p "If at any time you wish to discontinue the game, type quit."
+			p "If at any time you wish to discontinue the game, type quit (Q)."
 			response = gets.chomp.downcase
 			
 			case response 
