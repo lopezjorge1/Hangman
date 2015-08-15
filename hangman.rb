@@ -13,16 +13,16 @@ class Hangman
 		p "Welcome to the original Hangman! What's your name?"
 		@@name = gets.chomp.capitalize
 		p "Hi #{@@name}! Your opponent is convinced that you'll kill me, so let's prove them wrong."
-		p "Would you like to guess the secret word, or do you want to guess a letter of the word?"
+		p "Would you like to guess the secret word, or do you want to guess a letter (L) of the word (W)?"
 		response = gets.chomp.downcase
 		
 		case response
-		when "quit"
+		when "quit","Q","q"
 			p "Game over!"
-			p "The winning word was #{secret_word}."
-		when "word"
+			p "The secret word was #{secret_word}."
+		when "word","W","w"
 			guess_word
-		when "letter"
+		when "letter","L","l"
 			guess_letter
 		else
 			p "Would you like to guess the WORD or a LETTER?"
@@ -30,13 +30,13 @@ class Hangman
 			response = gets.chomp.downcase
 			
 			case response 
-			when "word"
+			when "word","W","w"
 				guess_word
-			when "letter"
+			when "letter","L","l"
 				guess_letter
-			when "quit"
+			when "quit","Q","q"
 				p "Game over!"
-				p "The winning word was #{secret_word}."
+				p "The secret word was #{secret_word}."
 			else
 				p "Anytime you would like to play, you know where to find me."
 			end
@@ -50,9 +50,9 @@ class Hangman
 		case response
 		when secret_word
 			p "Congratulations #{@@name}! You didn't kill me."
-		when "quit"
+		when "quit","Q","q"
 			p "Game over!"
-			p "The winning word was #{secret_word}."
+			p "The secret word was #{secret_word}."
 		else
 			p "Here's a tip #{@@name}: start with guessing letters. WRONG."
 			@@body_count += 1
@@ -66,13 +66,13 @@ class Hangman
 		@@letters_guessed.push(let)
 		
 		case let 
-		when "quit"
+		when "quit","Q","q"
 			p "Game over!"
-			p "The winning word was #{secret_word}."
+			p "The secret word was #{secret_word}."
 		end
 
 		if secret_word.count(let) <= 0
-			p "WRONG!"
+			p "Incorrect, but this is what you have thus far, #{guessed_word}."
 			@@body_count += 1
 			dead?
 		else
@@ -86,11 +86,11 @@ class Hangman
 			end	
 		end
 	end
-
+#If letter guessed already, it shouldn't count on body_count
 	def dead?
 		if @@body_count >= 8
 			p "You proved your opponent right, #{@@name}. LOSER."
-			p "The winning word was #{secret_word}."
+			p "The secret word was #{secret_word}."
 		else
 			continue_game
 		end
@@ -102,12 +102,12 @@ class Hangman
 		response = gets.chomp.downcase
 
 		case response
-		when "quit"
+		when "quit","Q","q"
 			p "Game over!"
-			p "The winning word was #{secret_word}."
-		when "word"
+			p "The secret word was #{secret_word}."
+		when "word","W","w"
 			guess_word
-		when "letter"
+		when "letter","L","l"
 			guess_letter
 		else
 			p "Would you like to guess the WORD or a LETTER?"
@@ -115,13 +115,13 @@ class Hangman
 			response = gets.chomp.downcase
 			
 			case response 
-			when "word"
+			when "word","W","w"
 				guess_word
-			when "letter"
+			when "letter","L","l"
 				guess_letter
-			when "quit"
+			when "quit","Q","q"
 				p "Game over!"
-				p "The winning word was #{secret_word}."
+				p "The secret word was #{secret_word}."
 			else
 				p "Anytime you would like to play, you know where to find me."
 			end
@@ -130,7 +130,7 @@ class Hangman
 end
 
 
-game = Hangman.new("hidden")
+game = Hangman.new("limerence")
 game.play
 # one problem for guess_letter could be that once a letter is guessed, for example d
 # then it would become **dd**, but since the method I used transforms anything that
