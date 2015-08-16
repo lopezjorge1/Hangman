@@ -137,3 +137,8 @@ end
 
 game = Hangman.new("quit")
 game.play
+=begin
+If the person guesses the letter q, then it should ask if they would like to quit
+or if they would like to input it as a guessed letter, and then if the letter is wrong
+body_count would be incremented or it would be included in the letters_guessed array
+=end
