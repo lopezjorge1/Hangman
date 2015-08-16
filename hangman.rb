@@ -61,6 +61,7 @@ class Hangman
 		end
 	end
 	#I still have to figure out how to quit within guess_letter 
+	#What if one of the letters are Q? Or if the word is quit?
 	def guess_letter
 		p "What do you think the lucky letter is?"
 		p "Keep in mind these are the letter you've guessed thus far: #{@@letters_guessed.map {|x| x.capitalize}.join(" , ")}."
@@ -68,9 +69,15 @@ class Hangman
 		@@letters_guessed.push(let)
 
 		#If secret_word doesn't have the letter guessed, then body_count is incremented
+		#If the same letter is guessed more than once, then body_count won't be affected
 		if secret_word.count(let) <= 0
 			p "Incorrect! Try harder next time."
-			@@body_count += 1
+			if @@letters_guessed.count(let) > 1
+				p "You also guessed #{let.capitalize} already, so try another letter!"
+				@@body_count = @@body_count
+			else
+				@@body_count += 1
+			end
 			dead?
 		#This puts an asterisk on every letter except the letters that are in the array letters_guessed	
 		else
@@ -84,7 +91,6 @@ class Hangman
 			end	
 		end
 	end
-#If letter guessed already, it shouldn't count on body_count
 #Once body_count reaches a number, then the game is discontinued
 	def dead?
 		if @@body_count >= 8 
