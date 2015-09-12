@@ -98,6 +98,6 @@ class Hangman
 	end
 end
 
-game = Hangman.new("boom")
+
 
 
