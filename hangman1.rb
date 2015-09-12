@@ -34,7 +34,7 @@ class Hangman
 		self.guessed_word = secret_word.gsub(/[^#{self.letters_guessed}]/,"*")
 		if response == "q"
 			quit?
-		elsif self.guessed_word.count("*") == secret_word.length #- letters_guessed.length #its saying that wrong letters are right
+		elsif self.secret_word.include?(response) == false 
 			puts "WRONG! TRY HARDER BRUH."
 			self.body_count -= 1
 			is_dead?
@@ -90,7 +90,7 @@ class Hangman
 	end
 	
 	def winner?
-		if self.guessed_word == secret_word.downcase
+		if self.guessed_word == self.secret_word.downcase
 			puts "DING DING DING, YOU DAH WINNAH."
 		else
 			continue_game
