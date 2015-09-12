@@ -28,7 +28,7 @@ class Hangman
 	end
 
 	def guess_letter
-		puts "What do you think one of the letters are yung buck?"
+		puts "What do you think one of the letters are yung buck?\nThese are the letters you've guessed so far: #{letters_guessed}."
 		response = gets.chomp.downcase
 		self.letters_guessed.push(response)
 		self.guessed_word = secret_word.gsub(/[^#{self.letters_guessed}]/,"*")
@@ -54,7 +54,7 @@ class Hangman
 	end
 
 	def continue_game
-		puts "Do you wish to guess the secret word (s) or a letter? (l)\n If you ever wish to discontinue type quit (q)."
+		puts "Do you wish to guess the secret word (s) or a letter? (l)\nIf you ever wish to discontinue type quit (q)."
 		response = gets.chomp.downcase
 		case response
 		when "secret word","s"
@@ -97,7 +97,3 @@ class Hangman
 		end
 	end
 end
-
-
-
-
