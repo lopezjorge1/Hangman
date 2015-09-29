@@ -39,7 +39,6 @@ class Hangman
 			self.body_count -= 1
 			is_dead?
 		else 
-			puts "Correct! This is what you have thus far: #{guessed_word}."
 			winner?
 		end
 	end
@@ -93,6 +92,7 @@ class Hangman
 		if self.guessed_word == self.secret_word.downcase
 			puts "DING DING DING, YOU DAH WINNAH."
 		else
+			puts "Correct! This is what you have thus far: #{guessed_word}."
 			continue_game
 		end
 	end
