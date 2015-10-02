@@ -30,11 +30,11 @@ class Hangman
 	def guess_letter
 		puts "What do you think one of the letters are yung buck?\nThese are the letters you've guessed so far: #{letters_guessed}."
 		response = gets.chomp.downcase
-		self.letters_guessed.push(response)
-		self.guessed_word = secret_word.gsub(/[^#{self.letters_guessed}]/,"*")
+		@letters_guessed.push(response)
+		@guessed_word = @secret_word.gsub(/[^#{@letters_guessed}]/,"*")
 		if response == "q"
 			quit?
-		elsif self.secret_word.include?(response) == false 
+		elsif @secret_word.include?(response) == false 
 			puts "WRONG! TRY HARDER BRUH."
 			self.body_count -= 1
 			is_dead?
@@ -47,7 +47,7 @@ class Hangman
 		if self.body_count <= 0
 			puts "I'm sorry, but your game is over."
 		else
-			puts "You have #{self.body_count} tries left."
+			puts "You have #{@body_count} tries left."
 			continue_game
 		end
 	end
@@ -89,7 +89,7 @@ class Hangman
 	end
 	
 	def winner?
-		if self.guessed_word == self.secret_word.downcase
+		if @guessed_word == @secret_word.downcase
 			puts "DING DING DING, YOU DAH WINNAH."
 		else
 			puts "Correct! This is what you have thus far: #{guessed_word}."
@@ -97,3 +97,4 @@ class Hangman
 		end
 	end
 end
+game = Hangman.new("yellow")
