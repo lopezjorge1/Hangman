@@ -3,12 +3,11 @@ class Hangman
 	attr_accessor :guessed_word, :secret_word, :body_count, :letters_guessed
 
 	def initialize
-		@guessed_word = ""
 		dictionary = Dictionary.new
 		@secret_word = dictionary.file.readlines.sample
-		@letters_guessed = []
+		@guessed_word = secret_word.gsub(/[a-z]/,"_ ")
 		@body_count = 8
-		puts secret_word
+		@letters_guessed = []
 		play
 	end
 
@@ -26,29 +25,31 @@ class Hangman
 		else
 			puts "Errrr! WRONG. Try again."
 			self.body_count -= 1
-			is_dead?
+			is_dead
 		end
 	end
 
 	def guess_letter
 		puts "What do you think one of the letters are yung buck?\nThese are the letters you've guessed so far: #{letters_guessed}."
 		response = gets.chomp.downcase
+		indices = secret_word.chars.each_index.select {|x| secret_word[x] == response}
 		letters_guessed.push(response)
-		self.guessed_word = secret_word.gsub(/[^#{@letters_guessed}]/,"*")
+		#self.guessed_word = secret_word.gsub(/[^#{letters_guessed}]/,"*")
 		if response == "q"
-			quit?
+			quit
 		elsif secret_word.include?(response) == false 
 			puts "WRONG! TRY HARDER BRUH."
 			self.body_count -= 1
-			is_dead?
+			is_dead
 		else 
-			winner?
+			indices.each {|x| self.guessed_word[x] = secret_word[x]} 
+			winner
 		end
 	end
 
-	def is_dead?
+	def is_dead
 		if body_count <= 0
-			puts "I'm sorry, but your game is over."
+			puts "I'm sorry, but your game is over. The word was #{secret_word}."
 		else
 			puts "You have #{body_count} tries left."
 			continue_game
@@ -71,7 +72,7 @@ class Hangman
 		end
 	end
 
-	def quit?
+	def quit
 		puts "Are you trying to quit (q) or is this your guess (g)?"
 		response = gets.chomp.downcase
 		case response
@@ -80,22 +81,22 @@ class Hangman
 		when "guess","g"
 			if secret_word.count("q") > 0
 				puts "GREAT! This is what you have thus far: #{guessed_word}."
-				winner?
+				winner
 			else
 				puts "WRONG! TRY HARDER BRUH!"
 				self.body_count -= 1
-				is_dead?
+				is_dead
 			end
 		else
-			quit?
+			quit
 		end
 	end
 	
-	def winner?
+	def winner
 		if guessed_word == secret_word.downcase
 			puts "DING DING DING, YOU DAH WINNAH."
 		else
-			puts "Correct! This is what you have thus far: #{guessed_word}."
+			puts "Correct! This is what you have thus far: #{guessed_word}"
 			continue_game
 		end
 	end
