@@ -1,11 +1,14 @@
+require './dictionary.rb'
 class Hangman 
 	attr_accessor :guessed_word, :secret_word, :body_count, :letters_guessed
 
-	def initialize(secret_word)
+	def initialize
 		@guessed_word = ""
-		@secret_word = secret_word.downcase
+		dictionary = Dictionary.new
+		@secret_word = dictionary.file.readlines.sample
 		@letters_guessed = []
 		@body_count = 8
+		puts secret_word
 		play
 	end
 
@@ -30,11 +33,11 @@ class Hangman
 	def guess_letter
 		puts "What do you think one of the letters are yung buck?\nThese are the letters you've guessed so far: #{letters_guessed}."
 		response = gets.chomp.downcase
-		@letters_guessed.push(response)
-		@guessed_word = @secret_word.gsub(/[^#{@letters_guessed}]/,"*")
+		letters_guessed.push(response)
+		self.guessed_word = secret_word.gsub(/[^#{@letters_guessed}]/,"*")
 		if response == "q"
 			quit?
-		elsif @secret_word.include?(response) == false 
+		elsif secret_word.include?(response) == false 
 			puts "WRONG! TRY HARDER BRUH."
 			self.body_count -= 1
 			is_dead?
@@ -44,10 +47,10 @@ class Hangman
 	end
 
 	def is_dead?
-		if self.body_count <= 0
+		if body_count <= 0
 			puts "I'm sorry, but your game is over."
 		else
-			puts "You have #{@body_count} tries left."
+			puts "You have #{body_count} tries left."
 			continue_game
 		end
 	end
@@ -89,7 +92,7 @@ class Hangman
 	end
 	
 	def winner?
-		if @guessed_word == @secret_word.downcase
+		if guessed_word == secret_word.downcase
 			puts "DING DING DING, YOU DAH WINNAH."
 		else
 			puts "Correct! This is what you have thus far: #{guessed_word}."
@@ -97,4 +100,4 @@ class Hangman
 		end
 	end
 end
-game = Hangman.new("yellow")
+Hangman.new
