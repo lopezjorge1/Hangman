@@ -1,11 +1,13 @@
 require './dictionary.rb'
-class Hangman 
+require './checker.rb'
+class Hangman
+	include Checker 
 	attr_accessor :guessed_word, :secret_word, :body_count, :letters_guessed
 
 	def initialize
 		dictionary = Dictionary.new
 		@secret_word = dictionary.file.readlines.sample
-		@guessed_word = secret_word.gsub(/[a-z]/,"_ ")
+		@guessed_word = secret_word.gsub(/[a-z]/,"*")
 		@body_count = 8
 		@letters_guessed = []
 		play
@@ -34,7 +36,7 @@ class Hangman
 		response = gets.chomp.downcase
 		indices = secret_word.chars.each_index.select {|x| secret_word[x] == response}
 		letters_guessed.push(response)
-		#self.guessed_word = secret_word.gsub(/[^#{letters_guessed}]/,"*")
+		if repetition?(letters_guessed) then guess_letter end
 		if response == "q"
 			quit
 		elsif secret_word.include?(response) == false 
