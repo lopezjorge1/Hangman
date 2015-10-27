@@ -1,52 +1,20 @@
+#when I press q and then g it doesn't work correctly
 require './dictionary.rb'
-require './checker.rb'
+require './hangman_player.rb'
 class Hangman
-	include Checker 
-	attr_accessor :guessed_word, :secret_word, :body_count, :letters_guessed
+	attr_accessor :secret_word, :body_count, :player
 
 	def initialize
 		dictionary = Dictionary.new
 		@secret_word = dictionary.file.readlines.sample
-		@guessed_word = secret_word.gsub(/[a-z]/,"*")
 		@body_count = 8
-		@letters_guessed = []
+		@player = Player.new(secret_word)
 		play
 	end
 
 	def play
 		puts "Welcome to Hangman!"
 		continue_game
-	end
-
-	def guess_word
-		puts "What do you think the secret word is?"
-		response = gets.chomp.downcase
-		case response
-		when secret_word
-			puts "WINNAH WINNAH CHICKEN DINNAH."
-		else
-			puts "Errrr! WRONG. Try again."
-			self.body_count -= 1
-			is_dead
-		end
-	end
-
-	def guess_letter
-		puts "What do you think one of the letters are yung buck?\nThese are the letters you've guessed so far: #{letters_guessed}."
-		response = gets.chomp.downcase
-		indices = secret_word.chars.each_index.select {|x| secret_word[x] == response}
-		letters_guessed.push(response)
-		if repetition?(letters_guessed) then guess_letter end
-		if response == "q"
-			quit
-		elsif secret_word.include?(response) == false 
-			puts "WRONG! TRY HARDER BRUH."
-			self.body_count -= 1
-			is_dead
-		else 
-			indices.each {|x| self.guessed_word[x] = secret_word[x]} 
-			winner
-		end
 	end
 
 	def is_dead
@@ -63,9 +31,12 @@ class Hangman
 		response = gets.chomp.downcase
 		case response
 		when "secret word","s"
-			guess_word
+			player.guess_word
+			is_dead
 		when "letter","l"
-			guess_letter
+			player.guess_letter
+			winner
+			is_dead
 		when "quit","q"
 			puts "It was nice having you."
 		else
@@ -93,7 +64,8 @@ class Hangman
 			quit
 		end
 	end
-	
+
+
 	def winner
 		if guessed_word == secret_word.downcase
 			puts "DING DING DING, YOU DAH WINNAH."
