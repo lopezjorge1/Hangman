@@ -13,8 +13,7 @@ class Player
 	def guess_word
 		puts "What do you think the secret word is?"
 		response = gets.chomp.downcase
-		case response
-		when secret_word
+		if response == secret_word
 			puts "WINNAH WINNAH CHICKEN DINNAH."
 		else
 			puts "Errrr! WRONG. Try again."
